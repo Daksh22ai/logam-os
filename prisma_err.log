@@ -1,0 +1,17 @@
+﻿Loaded Prisma config from prisma.config.ts.
+System.Management.Automation.RemoteException
+Prisma schema loaded from prisma\schema.prisma.
+System.Management.Automation.RemoteException
+Error: Prisma schema validation - (validate wasm)
+Error code: P1012
+[1;91merror[0m: [1mThe datasource property `url` is no longer supported in schema files. Move connection URLs for Migrate to `prisma.config.ts` and pass either `adapter` for a direct database connection or `accelerateUrl` for Accelerate to the `PrismaClient` constructor. See https://pris.ly/d/config-datasource and https://pris.ly/d/prisma7-client-config[0m
+  [1;94m-->[0m  [4mprisma\schema.prisma:7[0m
+[1;94m   | [0m
+[1;94m 6 | [0m  provider = "postgresql"
+[1;94m 7 | [0m  [1;91murl      = env("DATABASE_URL")[0m
+[1;94m   | [0m
+System.Management.Automation.RemoteException
+Validation Error Count: 1
+[Context: validate]
+System.Management.Automation.RemoteException
+Prisma CLI Version : 7.5.0

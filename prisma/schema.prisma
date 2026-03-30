@@ -1,0 +1,202 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Organisation (tenant) ───────────────────────────────────────────
+
+model Organisation {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  plan      String   @default("starter") // starter | growth | scale
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  clients   Client[]
+  users     User[]
+
+  @@map("organisations")
+}
+
+// ─── User ────────────────────────────────────────────────────────────
+
+model User {
+  id        String   @id @default(cuid())
+  orgId     String
+  clerkId   String   @unique
+  name      String
+  email     String
+  role      String   @default("member") // owner | admin | member | viewer
+  avatarUrl String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  org       Organisation @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@index([orgId])
+  @@map("users")
+}
+
+// ─── Client (brand) ──────────────────────────────────────────────────
+
+model Client {
+  id            String   @id @default(cuid())
+  orgId         String
+  name          String
+  shortCode     String   // 2-char abbreviation (HI, FF, NJ)
+  color         String   // hex color
+  vertical      String   // ecommerce | realestate | education | other
+  status        String   @default("active") // active | paused | churned
+  contractValue Float?
+  platforms     String[] // ["meta", "google"]
+  kpiType       String   @default("roas") // roas | cpl
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  org           Organisation @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  dataSources   DataSource[]
+  healthScores  HealthScore[]
+  creatives     Creative[]
+  alerts        Alert[]
+  metrics       Metric[]
+  reports       Report[]
+
+  @@index([orgId])
+  @@index([orgId, status])
+  @@map("clients")
+}
+
+// ─── Data Source (OAuth connection) ──────────────────────────────────
+
+model DataSource {
+  id             String    @id @default(cuid())
+  clientId       String
+  platform       String    // meta | google | tiktok | ga4 | shopify
+  accountId      String    // platform's account ID
+  accessToken    String    // encrypted at app layer
+  refreshToken   String?   // encrypted at app layer
+  tokenExpiresAt DateTime?
+  status         String    @default("active") // active | expired | revoked
+  lastSyncedAt   DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  client         Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  @@unique([clientId, platform, accountId])
+  @@map("data_sources")
+}
+
+// ─── Metric (normalised, time-series) ────────────────────────────────
+// Will be converted to TimescaleDB hypertable via raw SQL migration
+
+model Metric {
+  id          BigInt   @id @default(autoincrement())
+  clientId    String
+  sourceId    String   // DataSource id
+  platform    String   // meta | google | tiktok
+  level       String   // account | campaign | adset | ad
+  entityId    String   // campaign ID, ad set ID, etc.
+  entityName  String
+  date        DateTime @db.Date
+  spend       Float    @default(0)
+  impressions BigInt   @default(0)
+  clicks      BigInt   @default(0)
+  ctr         Float    @default(0)
+  cpc         Float    @default(0)
+  conversions Float    @default(0)
+  convValue   Float    @default(0)
+  roas        Float    @default(0)
+  frequency   Float?
+  hookRate    Float?
+  reach       BigInt?
+  createdAt   DateTime @default(now())
+  client      Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  @@index([clientId, date])
+  @@index([clientId, platform, date])
+  @@index([entityId, date])
+  @@map("metrics")
+}
+
+// ─── Health Score ────────────────────────────────────────────────────
+
+model HealthScore {
+  id         String   @id @default(cuid())
+  clientId   String
+  score      Int      // 0–100
+  riskLevel  String   // low | medium | high | critical
+  signals    Json     // array of { label, impact, direction }
+  computedAt DateTime @default(now())
+  client     Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  @@index([clientId, computedAt])
+  @@map("health_scores")
+}
+
+// ─── Creative ────────────────────────────────────────────────────────
+
+model Creative {
+  id           String   @id @default(cuid())
+  clientId     String
+  metaAdId     String?
+  name         String
+  hookType     String   // curiosity | pain | benefit | social_proof | ugc
+  angle        String?
+  format       String   // image | video | carousel | reel
+  audienceType String   // broad | lookalike | retargeting | custom
+  assetUrl     String?
+  ctr          Float?
+  hookRate     Float?
+  roas         Float?
+  frequency    Float?
+  fatigueDay   Int?     // day number when fatigue was detected
+  status       String   @default("active") // active | fatigued | paused
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  client       Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  @@index([clientId])
+  @@map("creatives")
+}
+
+// ─── Alert ───────────────────────────────────────────────────────────
+
+model Alert {
+  id          String    @id @default(cuid())
+  clientId    String
+  type        String    // fatigue | anomaly | opportunity | positive
+  severity    String    // critical | warning | info | success
+  title       String
+  description String    @db.Text
+  metadata    Json?
+  resolvedAt  DateTime?
+  createdAt   DateTime  @default(now())
+  client      Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  @@index([clientId, createdAt])
+  @@index([clientId, severity])
+  @@map("alerts")
+}
+
+// ─── Report (generated) ─────────────────────────────────────────────
+
+model Report {
+  id          String   @id @default(cuid())
+  clientId    String
+  title       String
+  dateFrom    DateTime @db.Date
+  dateTo      DateTime @db.Date
+  narrative   String?  @db.Text  // AI-generated narrative
+  kpiSnapshot Json?    // snapshot of KPI values at generation time
+  pdfUrl      String?  // Cloudflare R2 URL
+  portalUrl   String?  // public client portal link
+  status      String   @default("draft") // draft | reviewed | sent
+  sentAt      DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  client      Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  @@index([clientId, createdAt])
+  @@map("reports")
+}
