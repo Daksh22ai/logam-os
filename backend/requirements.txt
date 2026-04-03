@@ -13,6 +13,7 @@ langgraph>=0.2.0
 duckduckgo-search>=6.0.0
 pinecone-client>=5.0.0
 langchain-google-genai>=2.0.0
+langchain-community>=0.4.1
 
 # Validation & Settings
 pydantic>=2.0.0
