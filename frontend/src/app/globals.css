@@ -21,12 +21,8 @@
   --color-grn2: rgba(34, 197, 94, 0.13);
   --color-red: #ef4444;
   --color-red2: rgba(239, 68, 68, 0.13);
-  --color-blu: #3b82f6;
-  --color-blu2: rgba(59, 130, 246, 0.13);
   --color-orn: #f97316;
   --color-orn2: rgba(249, 115, 22, 0.13);
-  --color-pur: #a855f7;
-  --color-pur2: rgba(168, 85, 247, 0.13);
 
   /* Layout Widths */
   --width-rail: 60px;
