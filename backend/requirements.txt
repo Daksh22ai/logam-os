@@ -33,3 +33,4 @@ sqlalchemy>=2.0.0
 # PDF/Doc Processing (Optional but recommended for RAG)
 pypdf>=5.0.0
 python-docx>=1.1.0
+python-multipart>=0.0.22
