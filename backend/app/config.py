@@ -36,3 +36,6 @@ class Settings(BaseSettings):
     )
 
 settings = Settings()
+
+# Debug log to confirm key loading
+print("Loaded GROQ_API_KEY:", settings.GROQ_API_KEY[:6], "...")  # shows first 6 chars only
