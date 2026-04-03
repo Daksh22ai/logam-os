@@ -1,7 +1,8 @@
 import { HealthResponse } from '@/types/api'
 
 // Frontend runs on :3000, backend on :8000
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000' + '/api';
+
 
 // ── Types ────────────────────────────────────────────────────────────────
 
