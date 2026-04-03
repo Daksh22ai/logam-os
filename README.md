@@ -1,36 +1,96 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Logam OS
 
-## Getting Started
+Logam OS is an agency command centre — a unified operating system for performance marketing agencies managing 15–50 clients.
 
-First, run the development server:
+It consists of two parts:
+1. **Frontend:** A Next.js 16.2 web application using React 19, TailwindCSS v4, and Zustand.
+2. **Backend:** A FastAPI python application for AI generation powered by LangChain and Groq API.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Project Structure
+
+```
+logam-os/
+├── frontend/           # The Next.js Next 16 Application
+└── backend/            # The FastAPI Python Server
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 1. Setup the Backend
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The backend requires Python 3.10+ and uses LangChain with the Groq API to serve the AI Chatbot.
 
-## Learn More
+### Installation
 
-To learn more about Next.js, take a look at the following resources:
+1. Navigate to the backend directory:
+   ```bash
+   cd backend
+   ```
+2. Install the requirements:
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Set your environment variables (especially your Groq API Key):
+   ```bash
+   cp .env.example .env
+   # Edit .env with your actual GROQ_API_KEY
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Running the Server
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Start the API server on `http://localhost:8000`:
+```bash
+uvicorn app.main:app --reload
+```
 
-## Deploy on Vercel
+*Endpoints available:*
+- `GET /health`
+- `POST /api/chat`
+- `POST /api/chat/stream`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 2. Setup the Frontend
+
+The frontend uses Next.js 16.2 App Router.
+
+### Installation
+
+1. Navigate to the frontend directory:
+   ```bash
+   cd frontend
+   ```
+2. Install the dependencies:
+   ```bash
+   npm install
+   ```
+
+### Database (Prisma)
+
+The application uses Prisma acting on a PostgreSQL database.
+
+1. Create a `.env` file in the `frontend` folder with your `DATABASE_URL`. If you don't have one, the dummy fallback URL will be used to generate the client but database queries will fail.
+2. Generate the Prisma Client:
+   ```bash
+   npx prisma generate
+   ```
+
+### Running the App
+
+Start the Next.js development server:
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser. The frontend will communicate with the backend API automatically.
+
+---
+
+## UI / UX Architecture
+
+We are using a **Discord-inspired** layout with dark, minimal colors:
+- Base background: `#07070a`
+- Secondary backgrounds: `#0e0e12`, `#141418`
+- Text: Off-white and muteds
+- Accent: Logam Gold (`#f5c518`)
+*(No gradients or purple/blue accents are implemented in the base layout to maintain structural cleanliness)*

@@ -1,0 +1,27 @@
+# Logam OS Backend Dependencies
+# ================================
+
+# Web Framework
+fastapi>=0.115.0
+uvicorn[standard]>=0.34.0
+
+# AI / LLM
+langchain>=0.3.0
+langchain-groq>=0.2.0
+langchain-core>=0.3.0
+
+# Validation & Settings
+pydantic>=2.0.0
+pydantic-settings>=2.0.0
+
+# Environment
+python-dotenv>=1.0.0
+
+# SSE Streaming
+sse-starlette>=2.0.0
+
+# CORS
+# (included in fastapi/starlette)
+
+# Database
+sqlalchemy>=2.0.0
