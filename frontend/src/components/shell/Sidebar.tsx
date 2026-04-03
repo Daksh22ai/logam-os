@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { useParams, useRouter, usePathname } from 'next/navigation'
-import { Plus, ChevronDown, Hash, Sparkles, Folder } from 'lucide-react'
+import { Plus, ChevronDown, Sparkles, Folder } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { RAIL_BRANDS } from '@/lib/data/brands'
 
@@ -31,7 +31,7 @@ const NavItem = ({ label, href, icon, badge, active }: NavItemProps) => {
       {badge && (
         <span className={cn(
           "ml-auto text-white text-[9.5px] font-bold px-[5px] py-px rounded-[9px] min-w-[16px] text-center leading-[1.4]",
-          badge.color === 'red' ? "bg-red" : badge.color === 'orange' ? "bg-orn" : "bg-blu"
+          badge.color === 'red' ? "bg-red" : badge.color === 'orange' ? "bg-orn" : "bg-acc text-black"
         )}>
           {badge.count}
         </span>
@@ -89,7 +89,7 @@ export default function Sidebar() {
             label="client-updates" 
             href={`/${brandId}/updates`} 
             active={isRoute('updates')} 
-            badge={{ count: 1, color: 'blue' }} 
+            badge={{ count: 1, color: 'acc' }} 
           />
           <NavItem label="onboarding" href={`/${brandId}/onboarding`} active={isRoute('onboarding')} />
         </div>

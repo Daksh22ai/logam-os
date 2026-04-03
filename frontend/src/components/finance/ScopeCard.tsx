@@ -11,11 +11,10 @@ interface ScopeCardProps {
   hoursActual: number
   hoursContract: number
   budgetSpent: string
-  budgetTotal: string
 }
 
 export default function ScopeCard({ 
-  name, type, margin, hoursActual, hoursContract, budgetSpent, budgetTotal 
+  name, type, margin, hoursActual, hoursContract, budgetSpent 
 }: ScopeCardProps) {
   const overScope = hoursActual > hoursContract
   const marginStatus = margin < 12 ? 'bad' : margin < 18 ? 'warn' : 'good'

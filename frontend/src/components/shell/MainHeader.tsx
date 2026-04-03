@@ -4,8 +4,6 @@ import React from 'react'
 import Link from 'next/link'
 import { useParams, usePathname } from 'next/navigation'
 import { Sparkles, BarChart3, Bell, Palette, FileText, CheckCircle2, MessageSquare, Briefcase, FileDigit, Layout } from 'lucide-react'
-import { cn } from '@/lib/utils'
-
 import { BRANDS } from '@/lib/data/brands'
 
 export default function MainHeader() {

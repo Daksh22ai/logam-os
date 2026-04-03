@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { Sparkles } from 'lucide-react'
+import { TrendingUp, MessageSquare } from 'lucide-react'
 import { useUI } from '@/stores/ui'
 import { cn } from '@/lib/utils'
 
@@ -47,7 +47,7 @@ export default function AIInsightCard({ content, severity, brandName = 'the clie
           "flex items-center gap-1.25 text-[11px] px-2 py-0.5 rounded-[10px]",
           severity === 'good' ? "bg-grn2 text-grn" : 
           severity === 'warning' ? "bg-orn2 text-orn" : 
-          severity === 'critical' ? "bg-red2 text-red" : "bg-blu2 text-blu"
+          severity === 'critical' ? "bg-red2 text-red" : "bg-s3 text-t3"
         )}>
           {severity === 'good' ? '✓ Performing Well' : severity === 'warning' ? '⚠ Needs Attention' : severity === 'critical' ? '⚡ Critical Deviation' : 'ℹ Informational'}
         </div>

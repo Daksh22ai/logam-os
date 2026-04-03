@@ -168,7 +168,7 @@ export default function ChatPage() {
               <div>
                 <h2 className="text-xl font-medium text-[#F3F4F6] mb-2">How can I help you today?</h2>
                 <p className="text-[15px] text-[#9CA3AF] leading-relaxed">
-                  I'm your AI operating system. I can analyze campaign metrics, identify creative fatigue, or extract context from uploaded files.
+                  I&apos;m your AI operating system. I can analyze campaign metrics, identify creative fatigue, or extract context from uploaded files.
                 </p>
               </div>
               {/* Quick prompts */}

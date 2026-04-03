@@ -2,7 +2,6 @@
 
 import React from 'react'
 import { MoreHorizontal, Reply, Pin } from 'lucide-react'
-import { cn } from '@/lib/utils'
 
 interface ChatMessageProps {
   n: string

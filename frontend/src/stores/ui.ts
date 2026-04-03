@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { ApiClient, ChatSession, MessageResponse } from '@/lib/api'
+import { ApiClient, ChatSession } from '@/lib/api'
 
 export interface Message {
   id: string

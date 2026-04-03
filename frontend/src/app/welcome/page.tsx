@@ -460,7 +460,7 @@ function DashboardPreview() {
               <div className="bg-[#0e0e16] border border-[#f5c51820] rounded-[8px] p-2.5 mb-2 flex items-start gap-2">
                 <div className="shrink-0 bg-[#f5c51810] border border-[#f5c51825] text-acc text-[7px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-[0.4px]">✦ AI</div>
                 <p className="text-[9px] text-[#7878a0] leading-relaxed">
-                  <span className="text-[#c8c8e0] font-semibold">ROAS at 7.2× — strong.</span> Creative fatigue building on "DIY Canvas" ad set, frequency 4.8×. Recommend new hook by Wednesday.
+                  <span className="text-[#c8c8e0] font-semibold">ROAS at 7.2&times; &mdash; strong.</span> Creative fatigue building on &quot;DIY Canvas&quot; ad set, frequency 4.8&times;. Recommend new hook by Wednesday.
                 </p>
               </div>
 
@@ -470,7 +470,7 @@ function DashboardPreview() {
                   { label: 'ROAS Trend', bars: [42,50,46,58,55,64,68,72] },
                   { label: 'Spend Split', bars: [60,60,60,60,60,60,60,60], donut: true },
                   { label: 'Hook Rate', bars: [28,32,35,30,38,36,40,38] },
-                ].map(({ label, bars, donut }, ci) => (
+                ].map(({ label, bars, donut }) => (
                   <div key={label} className="bg-[#0e0e16] border border-[#1e1e2a] rounded-[7px] p-2">
                     <div className="text-[7px] text-[#3a3a55] uppercase tracking-[0.5px] mb-1.5">{label}</div>
                     <div className="flex items-end gap-0.5 h-9">
@@ -551,9 +551,9 @@ function QuoteSection() {
   return (
     <section className="py-14 px-6 max-w-3xl mx-auto text-center">
       <div ref={ref} style={{ opacity: visible ? 1 : 0, transform: visible ? 'translateY(0)' : 'translateY(20px)', transition: 'opacity 0.6s ease, transform 0.6s ease' }}>
-        <div className="text-acc text-[32px] mb-4 leading-none">"</div>
+        <div className="text-acc text-[32px] mb-4 leading-none">&quot;</div>
         <p className="text-[18px] text-[#a0a0c0] leading-relaxed italic mb-5">
-          Every month same struggle. We pull data from Meta, Google, merge it manually and someone spends 3–4 hours building a deck. By the time the client sees it, numbers are 2 days old.
+          Every month same struggle. We pull data from Meta, Google, merge it manually and someone spends 3&ndash;4 hours building a deck. By the time the client sees it, numbers are 2 days old.
         </p>
         <div className="text-[12px] text-[#4a4a65]">— Performance agency founder, Bangalore</div>
       </div>
@@ -590,13 +590,17 @@ export default function WelcomePage() {
 
   useEffect(() => {
     setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (!mounted) return
     const obs = new IntersectionObserver(
       ([e]) => { if (e.isIntersecting) { setStatsOn(true); obs.disconnect() } },
       { threshold: 0.3 }
     )
     if (statsRef.current) obs.observe(statsRef.current)
     return () => obs.disconnect()
-  }, [])
+  }, [mounted])
 
   const counts = [
     useCounter(30, 2000, statsOn),

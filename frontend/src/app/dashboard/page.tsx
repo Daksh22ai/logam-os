@@ -208,7 +208,7 @@ export default function DashboardHomePage() {
                     roas={brand.roas || undefined}
                     cpl={brand.cpl || undefined}
                     trend={brand.trend}
-                    alert={brand.alert as any}
+                    alert={brand.alert}
                   />
                 ))
               ) : (

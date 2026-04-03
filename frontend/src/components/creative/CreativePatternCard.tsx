@@ -2,7 +2,6 @@
 
 import React from 'react'
 import { Sparkles } from 'lucide-react'
-import { cn } from '@/lib/utils'
 
 interface PatternRowProps {
   rank: number
@@ -28,11 +27,11 @@ export default function CreativePatternCard({ brandName }: { brandName: string }
           <Sparkles size={10} />
           ✦ CREATIVE INTELLIGENCE
         </div>
-        <span className="text-[12px] text-t3 ml-2">Patterns from {brandName}'s creative history</span>
+        <span className="text-[12px] text-t3 ml-2">Patterns from {brandName}&apos;s creative history</span>
       </div>
 
       <p className="text-[13px] text-t2 mb-3.5 leading-relaxed">
-        AI identifies which hooks, angles, and formats work best for <strong className="text-t1">{brandName}'s specific audience</strong> — eliminating guesswork for your creative team.
+        AI identifies which hooks, angles, and formats work best for <strong className="text-t1">{brandName}&apos;s specific audience</strong> — eliminating guesswork for your creative team.
       </p>
 
       <div className="flex flex-col">
@@ -53,7 +52,7 @@ export default function CreativePatternCard({ brandName }: { brandName: string }
         />
         <PatternRow 
           rank={4} 
-          desc="<strong>'Order Now' CTA</strong> outperforms 'Shop Now' by 18% for purchase conversions." 
+          desc="<strong>&apos;Order Now&apos; CTA</strong> outperforms &apos;Shop Now&apos; by 18% for purchase conversions." 
           stat="+18% conv rate" 
         />
       </div>

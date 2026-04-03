@@ -79,64 +79,46 @@ def _get_mock_response(message: str) -> str:
 # ── Main service functions ────────────────────────────────────────────────
 
 async def process_message(message: str, chat_history: Optional[List[Dict]] = None) -> str:
-    """Non-streaming: process a chat message, respecting chat_history for multi-turn context."""
+    """Non-streaming: process a chat message via LangGraph agent."""
+    from app.chatbot.agent import run_agent
+    
     use_mock = not settings.GROQ_API_KEY or "mock" in settings.GROQ_API_KEY.lower()
-
     if use_mock:
         logger.info("Using smart mock AI response.")
         return _get_mock_response(message)
 
-    llm = get_chat_chain()
-    if llm is None:
-        return _get_mock_response(message)
-
     try:
-        msgs = build_prompt_messages(message, chat_history or [])
-        result = await llm.ainvoke(msgs)
-        # AIMessage → extract .content
-        return result.content if hasattr(result, "content") else str(result)
+        response = await run_agent(message, chat_history or [])
+        return response
     except Exception as e:
-        logger.warning(f"LLM call failed, falling back to mock: {e}")
+        logger.warning(f"LangGraph Agent call failed, falling back to mock: {e}")
         return _get_mock_response(message)
 
 
 async def stream_message(message: str, chat_history: Optional[List[Dict]] = None):
-    """Streaming: yields SSE-formatted data events, respecting chat_history."""
+    """Streaming: yields SSE-formatted data events from LangGraph agent."""
+    from app.chatbot.agent import stream_agent
+    
     use_mock = not settings.GROQ_API_KEY or "mock" in settings.GROQ_API_KEY.lower()
 
     # ── Mock path ──
     if use_mock:
         logger.info("Using smart mock AI streaming response.")
         mock_response = _get_mock_response(message)
-        words = mock_response.split(" ")
-        for i, word in enumerate(words):
-            sep = " " if i < len(words) - 1 else ""
-            yield f"data: {json.dumps({'text': word + sep})}\n\n"
-            delay = 0.06 if any(c in word for c in '.!?,\n') else 0.03
-            await asyncio.sleep(delay)
-        yield "data: [DONE]\n\n"
+        async for chunk in _mock_stream(mock_response):
+            yield chunk
         return
 
-    # ── Real LLM path ──
-    llm = get_chat_chain()
-    if llm is None:
-        logger.info("No valid chain, using mock streaming.")
-        async for event in _mock_stream(_get_mock_response(message)):
-            yield event
-        return
-
+    # ── Real Agent path ──
     try:
-        msgs = build_prompt_messages(message, chat_history or [])
-        async for chunk in llm.astream(msgs):
-            # AIMessageChunk → .content is the token text
-            text = chunk.content if hasattr(chunk, "content") else str(chunk)
-            if text:
-                yield f"data: {json.dumps({'text': text})}\n\n"
+        async for chunk in stream_agent(message, chat_history or []):
+            if chunk:
+                yield f"data: {json.dumps({'text': chunk})}\n\n"
         yield "data: [DONE]\n\n"
     except Exception as e:
-        logger.warning(f"LLM stream failed, falling back to mock: {e}")
-        async for event in _mock_stream(_get_mock_response(message)):
-            yield event
+        logger.warning(f"LangGraph Agent stream failed, falling back to mock: {e}")
+        async for chunk in _mock_stream(_get_mock_response(message)):
+            yield chunk
 
 
 async def _mock_stream(mock_response: str):

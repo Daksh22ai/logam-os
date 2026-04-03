@@ -28,14 +28,14 @@ export default function LandingSidebar() {
       <div className="bg-s2 border border-b1 rounded-[var(--r10)] p-3.5 mb-3">
         <div className="text-[10px] uppercase tracking-[0.8px] text-t3 font-bold mb-2.5">👥 Recent Activity</div>
         <div className="flex gap-2 items-start py-1.5 border-b border-b1">
-          <div className="w-[22px] h-[22px] rounded-full flex items-center justify-center font-display font-bold text-[9px] shrink-0 bg-blu2 text-blu">K</div>
+          <div className="w-[22px] h-[22px] rounded-full flex items-center justify-center font-display font-bold text-[9px] shrink-0 bg-acc2 text-acc">K</div>
           <div>
             <div className="text-[12px] text-t2 leading-snug">Karan launched new creative set for Sahajanand</div>
             <div className="text-[10px] text-t4 mt-0.5">20 min ago</div>
           </div>
         </div>
         <div className="flex gap-2 items-start py-1.5">
-          <div className="w-[22px] h-[22px] rounded-full flex items-center justify-center font-display font-bold text-[9px] shrink-0 bg-pur2 text-pur">P</div>
+          <div className="w-[22px] h-[22px] rounded-full flex items-center justify-center font-display font-bold text-[9px] shrink-0 bg-acc2 text-acc">P</div>
           <div>
             <div className="text-[12px] text-t2 leading-snug">Priya sent monthly report to Fitness Fox</div>
             <div className="text-[10px] text-t4 mt-0.5">1h ago</div>
@@ -45,9 +45,9 @@ export default function LandingSidebar() {
 
       {/* Schedule Widget */}
       <div className="bg-s2 border border-b1 rounded-[var(--r10)] p-3.5">
-        <div className="text-[10px] uppercase tracking-[0.8px] text-t3 font-bold mb-2.5">📅 Today's Schedule</div>
+        <div className="text-[10px] uppercase tracking-[0.8px] text-t3 font-bold mb-2.5">📅 Today&apos;s Schedule</div>
         <div className="flex gap-2 items-start py-[7px] border-b border-b1">
-          <div className="w-1.5 h-1.5 rounded-full bg-blu shrink-0 mt-1" />
+          <div className="w-1.5 h-1.5 rounded-full bg-acc shrink-0 mt-1" />
           <div>
             <div className="text-[12px] text-t2 leading-relaxed">Client call — Sahajanand Elite review</div>
             <div className="text-[10px] text-t3 mt-0.5">2:00 PM · 45 min</div>

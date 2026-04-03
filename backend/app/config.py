@@ -7,8 +7,19 @@ load_dotenv()
 
 class Settings(BaseSettings):
     # API Keys
-    GROQ_API_KEY: str = "mock-key-for-now" # Placeholder to allow running without key initially
+    GROQ_API_KEY: str = "mock-key-for-now"
     GROQ_MODEL_NAME: str = "llama-3.3-70b-versatile"
+    
+    PINECONE_API_KEY: str = ""
+    GOOGLE_API_KEY: str = ""
+    
+    @property
+    def HAS_PINECONE(self) -> bool:
+        return bool(self.PINECONE_API_KEY)
+    
+    @property
+    def HAS_GEMINI(self) -> bool:
+        return bool(self.GOOGLE_API_KEY)
     
     # Server configuration
     HOST: str = "0.0.0.0"
