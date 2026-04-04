@@ -1,33 +1,49 @@
 'use client'
 
-import React from 'react'
+import React, { memo } from 'react'
+import { cn } from '@/lib/utils'
 
-export default function StatBar() {
+function StatCard({ label, value, sub, colorClass }: { label: string, value: string, sub: string, colorClass: string }) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-[10px] mb-6">
-      <div className="bg-s1 border border-b1 rounded-[var(--r10)] p-[14px_16px]">
-        <div className="text-[10px] uppercase tracking-[0.8px] text-t3 font-bold mb-1.5">Active Clients</div>
-        <div className="font-display text-[22px] font-bold tracking-[-0.5px] text-acc">38</div>
-        <div className="text-[11px] text-t3 mt-0.5">↑ 3 this month</div>
+    <div className="bg-s1/60 border border-b1 rounded-xl p-3.5 md:p-4 shadow-sm hover:shadow-md hover:border-b2 transition-all duration-300 group">
+      <div className="text-[10px] uppercase tracking-[1.2px] text-t4 font-black mb-2 opacity-80 group-hover:opacity-100 transition-opacity">{label}</div>
+      <div className={cn("text-[20px] md:text-[24px] font-black tracking-tight leading-none mb-1", colorClass)}>
+        {value}
       </div>
-      
-      <div className="bg-s1 border border-b1 rounded-[var(--r10)] p-[14px_16px]">
-        <div className="text-[10px] uppercase tracking-[0.8px] text-t3 font-bold mb-1.5">Total Monthly Spend</div>
-        <div className="font-display text-[22px] font-bold tracking-[-0.5px] text-grn">₹48.2L</div>
-        <div className="text-[11px] text-t3 mt-0.5">Across all accounts</div>
-      </div>
-
-      <div className="bg-s1 border border-b1 rounded-[var(--r10)] p-[14px_16px]">
-        <div className="text-[10px] uppercase tracking-[0.8px] text-t3 font-bold mb-1.5">Alerts Today</div>
-        <div className="font-display text-[22px] font-bold tracking-[-0.5px] text-orn">7</div>
-        <div className="text-[11px] text-t3 mt-0.5">3 critical, 4 warnings</div>
-      </div>
-
-      <div className="bg-s1 border border-b1 rounded-[var(--r10)] p-[14px_16px]">
-        <div className="text-[10px] uppercase tracking-[0.8px] text-t3 font-bold mb-1.5">Avg ROAS</div>
-        <div className="font-display text-[22px] font-bold tracking-[-0.5px] text-blu">5.8×</div>
-        <div className="text-[11px] text-t3 mt-0.5">↑ 0.4× vs last month</div>
-      </div>
+      <div className="text-[11px] text-t3 font-medium truncate">{sub}</div>
     </div>
   )
 }
+
+function StatBar() {
+  return (
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-6">
+      <StatCard 
+        label="Active Clients" 
+        value="38" 
+        sub="↑ 3 this month" 
+        colorClass="text-acc" 
+      />
+      <StatCard 
+        label="Monthly Spend" 
+        value="₹48.2L" 
+        sub="Across all accounts" 
+        colorClass="text-grn" 
+      />
+      <StatCard 
+        label="Alerts Today" 
+        value="7" 
+        sub="3 critical, 4 warnings" 
+        colorClass="text-orn" 
+      />
+      <StatCard 
+        label="Avg ROAS" 
+        value="5.8×" 
+        sub="↑ 0.4× vs last month" 
+        colorClass="text-blu" 
+      />
+    </div>
+  )
+}
+
+export default memo(StatBar)

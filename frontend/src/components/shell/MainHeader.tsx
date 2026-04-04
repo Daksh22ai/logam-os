@@ -1,14 +1,18 @@
-'use client'
-
-import React from 'react'
+import React, { memo } from 'react'
 import Link from 'next/link'
-import { useParams, usePathname } from 'next/navigation'
-import { Sparkles, BarChart3, Bell, Palette, FileText, CheckCircle2, MessageSquare, Briefcase, FileDigit, Layout } from 'lucide-react'
+import { useParams, usePathname, useRouter } from 'next/navigation'
+import { Sparkles, BarChart3, Bell, Palette, FileText, CheckCircle2, MessageSquare, Briefcase, FileDigit, Layout, ArrowLeft, Menu } from 'lucide-react'
 import { BRANDS } from '@/lib/data/brands'
+import { useIsMobile } from '@/hooks/use-mobile'
+import { useUI } from '@/stores/ui'
 
-export default function MainHeader() {
+function MainHeader() {
   const params = useParams()
   const pathname = usePathname()
+  const router = useRouter()
+  const isMobile = useIsMobile()
+  const { setSidebarOpen } = useUI()
+  
   const brandId = params?.brandId as string
   const brand = BRANDS.find(b => b.id === brandId) || BRANDS[0]
 
@@ -28,13 +32,42 @@ export default function MainHeader() {
   }
 
   const { icon, title, sub, showPlatforms, showExport } = getSectionData()
+  const isDashboard = pathname === '/dashboard' || pathname === '/'
 
   return (
-    <div className="h-[46px] px-4 border-b border-b1 flex items-center gap-2.5 shrink-0 bg-bg/85 backdrop-blur-md z-40">
-      <span className="text-t3 shrink-0">{icon}</span>
-      <span className="font-display text-[14.5px] font-semibold">{title}</span>
-      <span className="w-px h-3.5 bg-b2 shrink-0" />
-      <span className="text-[11.5px] text-t3 truncate">{sub}</span>
+    <div className="h-[var(--header-height)] px-4 border-b border-b1 flex items-center gap-2.5 shrink-0 bg-bg/85 backdrop-blur-md z-40">
+      {isMobile && (
+        <button 
+          onClick={() => setSidebarOpen(true)}
+          className="p-1.5 -ml-1.5 rounded-md text-t3 hover:bg-s2 hover:text-t1 transition-colors"
+          aria-label="Open menu"
+        >
+          <Menu size={18} />
+        </button>
+      )}
+
+      {!isDashboard && (
+        <button 
+          onClick={() => router.back()}
+          className="flex items-center gap-1.5 text-[12.5px] text-t3 hover:text-t1 transition-opacity opacity-80 hover:opacity-100 pr-2 group"
+        >
+          <ArrowLeft size={14} className="transition-transform group-hover:-translate-x-0.5" />
+          Back
+        </button>
+      )}
+
+      {!isMobile && (
+        <>
+          <span className="text-t3 shrink-0">{icon}</span>
+          <span className="font-display text-[14.5px] font-semibold">{title}</span>
+          <span className="w-px h-3.5 bg-b2 shrink-0" />
+          <span className="text-[11.5px] text-t3 truncate">{sub}</span>
+        </>
+      )}
+
+      {isMobile && !isDashboard && (
+        <span className="font-display text-[14px] font-semibold truncate flex-1">{title}</span>
+      )}
 
       <div className="ml-auto flex items-center gap-1.5">
         {showPlatforms && brand.platform.map(p => (
@@ -61,3 +94,5 @@ export default function MainHeader() {
     </div>
   )
 }
+
+export default memo(MainHeader)

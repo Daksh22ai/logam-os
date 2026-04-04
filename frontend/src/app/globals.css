@@ -27,6 +27,13 @@
   /* Layout Widths */
   --width-rail: 60px;
   --width-side: 230px;
+  --header-height: 48px;
+
+  /* Breakpoints */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
 
   /* Border Radii */
   --radius-r4: 4px;
@@ -35,6 +42,11 @@
   --radius-r10: 10px;
   --radius-r12: 12px;
 
+  /* Premium Interaction System */
+  --transition-premium: cubic-bezier(0.23, 1, 0.32, 1);
+  --shadow-glow: 0 0 15px rgba(245, 197, 24, 0.15);
+  --shadow-glow-hover: 0 0 25px rgba(245, 197, 24, 0.25);
+  
   /* shadcn/ui variables compatibility mappings */
   --color-background: var(--color-bg);
   --color-foreground: var(--color-t1);
@@ -47,7 +59,7 @@
   --color-input: var(--color-s4);
   --color-ring: var(--color-acc);
 
-  --animate-pulse: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-pulse: pulse 2s var(--transition-premium) infinite;
   
   --keyframes-pulse: {
     '0%, 100%': { opacity: 1 },
